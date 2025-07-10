@@ -1,12 +1,14 @@
-import requests
 import json
-import time
+import base64
 
 with open('config.json') as f:
     config = json.load(f)
-    
+
+# ترميز التوكن إلى Base64
+token_b64 = base64.b64encode(config['token'].encode('utf-8')).decode('ascii')
+
 headers = {
-    'Authorization': f"Bearer {config['token']}",
+    'Authorization': f"Basic {token_b64}",
     'Content-Type': 'application/json'
 }
 
