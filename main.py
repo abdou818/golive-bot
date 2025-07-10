@@ -8,8 +8,8 @@ intents.guilds = True
 
 client = discord.Client(intents=intents)
 
-TOKEN = os.environ.get("MTMzNjg3MDA4MzM1MTQxNjgzMg.GVuTZ0.ASc-h7VAatch6oRUIpwGWJcrqPyssT_yb35b7Y")
-VOICE_CHANNEL_ID = int(os.environ.get("1387106900390449203"))
+TOKEN = os.environ.get("DISCORD_TOKEN")
+VOICE_CHANNEL_ID = int(os.environ.get("VOICE_CHANNEL_ID"))
 
 @client.event
 async def on_ready():
