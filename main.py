@@ -1,36 +1,26 @@
-import json
-import requests
-import base64
-import time
+import discord
+import asyncio
+import os
 
+intents = discord.Intents.default()
+intents.voice_states = True
+intents.guilds = True
 
-with open('config.json') as f:
-    config = json.load(f)
+client = discord.Client(intents=intents)
 
-# ترميز التوكن إلى Base64
-token_b64 = base64.b64encode(config['token'].encode('utf-8')).decode('ascii')
+TOKEN = os.environ.get("MTMzNjg3MDA4MzM1MTQxNjgzMg.GVuTZ0.ASc-h7VAatch6oRUIpwGWJcrqPyssT_yb35b7Y")  # أو تقدر تحطه مباشرة كـ string
+VOICE_CHANNEL_ID = int(os.environ.get("1387106900390449203"))  # أو ID الروم الصوتي
 
-headers = {
-    'Authorization': f"Basic {token_b64}",
-    'Content-Type': 'application/json'
-}
+@client.event
+async def on_ready():
+    print(f"Logged in as {client.user}")
 
+    # تلقى السيرفر الأول
+    for guild in client.guilds:
+        channel = guild.get_channel(VOICE_CHANNEL_ID)
+        if channel and isinstance(channel, discord.VoiceChannel):
+            await channel.connect()
+            print(f"Connected to voice channel: {channel.name}")
+            break
 
-def go_live():
-    payload = {
-        'type': 1,
-        'guild_id': config['guild_id'],
-        'channel_id': config['channel_id'],
-        'message': config['message']
-    }
-
-    while True:
-        requests.post(
-            'https://discord.com/api/v9/channels/' + config['channel_id'] + '/call',
-            headers=headers,
-            data=json.dumps(payload)
-        )
-        print("Go Live Sent")
-        time.sleep(60 * 5)  # Repeat every 5 minutes
-
-go_live()
+client.run(TOKEN)
