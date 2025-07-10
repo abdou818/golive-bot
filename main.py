@@ -4,11 +4,12 @@ import time
 
 with open('config.json') as f:
     config = json.load(f)
-
+    
 headers = {
-    'Authorization': config['token'],
+    'Authorization': f"Bearer {config['token']}",
     'Content-Type': 'application/json'
 }
+
 
 def go_live():
     payload = {
